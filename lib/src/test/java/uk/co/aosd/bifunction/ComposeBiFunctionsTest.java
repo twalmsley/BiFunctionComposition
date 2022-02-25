@@ -34,12 +34,12 @@ class ComposeBiFunctionsTest {
         //
         // Compose the ComposableBiFunction so they use the same Environment object.
         //
-        final var makeAndSendMessage = sendMessage.biCombine(makeMessage);
+        final var makeAndSendMessage = sendMessage.compose(makeMessage);
         //
         // Alternative composition that some people will find more intuitive since the two BiFunction parameters are
         // in order of execution.
         //
-        final var makeAndSendMessage2 = makeMessage.biAndThen(sendMessage);
+        final var makeAndSendMessage2 = makeMessage.andThen(sendMessage);
 
         //
         // Create an Environment object and invoke both versions of the combined ComposableBiFunction

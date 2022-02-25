@@ -20,7 +20,7 @@ public interface ComposableBiFunction<ENV, T, R> extends BiFunction<ENV, T, R> {
      * @param first a ComposableBiFunction - executed before this
      * @return a combination of the two ComposableBiFunction that implements `this(env, first(env, p1))`
      */
-    default <U> ComposableBiFunction<ENV, U, R> biCombine(final ComposableBiFunction<ENV, U, T> first) {
+    default <U> ComposableBiFunction<ENV, U, R> compose(final ComposableBiFunction<ENV, U, T> first) {
         return (e, t) -> this.apply(e, first.apply(e, t));
     }
 
@@ -32,7 +32,7 @@ public interface ComposableBiFunction<ENV, T, R> extends BiFunction<ENV, T, R> {
      * @param second a ComposableBiFunction - executed after this
      * @return a combination of the two ComposableBiFunction that implements `second(env, this(env, p1))`
      */
-    default <U> ComposableBiFunction<ENV, T, U> biAndThen(final ComposableBiFunction<ENV, R, U> second) {
+    default <U> ComposableBiFunction<ENV, T, U> andThen(final ComposableBiFunction<ENV, R, U> second) {
         return (e, t) -> second.apply(e, this.apply(e, t));
     }
 

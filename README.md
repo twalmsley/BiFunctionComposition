@@ -17,13 +17,13 @@ Combining the `BiFunctions` manually then behaves like this so that both `BiFunc
 ```
 The pattern can be generalised:
 ```java
-        var biFunc3 = biFunc1.biAndThen(biFunc2);
+        var biFunc3 = biFunc1.andThen(biFunc2);
 
         var result = biFunc3.apply(e, p);
 ```
 Or, using the more mathematical form of function composition:
 ```java
-        var biFunc3 = biFunc2.biCompose(biFunc1);
+        var biFunc3 = biFunc2.compose(biFunc1);
 
         var result = biFunc3.apply(e, p);
 ```
