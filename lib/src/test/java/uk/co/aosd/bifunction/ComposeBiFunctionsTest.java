@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.function.BiFunction;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,31 +18,31 @@ class ComposeBiFunctionsTest {
     @Test
     void someLibraryMethodReturnsTrue() throws MalformedURLException {
         //
-        // Create a BiFunction to convert a String to a Message using an Environment object.
+        // Create a ComposableBiFunction to convert a String to a Message using an Environment object.
         //
-        final BiFunction<Env, String, Message> makeMessage = (e, s) -> new Message(
+        final ComposableBiFunction<Env, String, Message> makeMessage = (e, s) -> new Message(
                 s + " " + e.greeting() + " " + e.name());
 
         //
-        // Create a BiFunction to send a message to a URL defined in the Environment object and return a
+        // Create a ComposableBiFunction to send a message to a URL defined in the Environment object and return a
         // SendMessageResult. (This doesn't actually send any messages as it's just an example.)
         //
-        final BiFunction<Env, Message, SendMessageResult> sendMessage = (e, m) -> new SendMessageResult(true,
+        final ComposableBiFunction<Env, Message, SendMessageResult> sendMessage = (e, m) -> new SendMessageResult(true,
                 "Sent to: " + e.msgDestination()
                         .toString());
 
         //
-        // Compose the BiFunctions so they use the same Environment object.
+        // Compose the ComposableBiFunction so they use the same Environment object.
         //
-        final var makeAndSendMessage = ComposeBiFunctions.biCombine(sendMessage, makeMessage);
+        final var makeAndSendMessage = sendMessage.biCombine(makeMessage);
         //
         // Alternative composition that some people will find more intuitive since the two BiFunction parameters are
         // in order of execution.
         //
-        final var makeAndSendMessage2 = ComposeBiFunctions.biAndThen(makeMessage, sendMessage);
+        final var makeAndSendMessage2 = makeMessage.biAndThen(sendMessage);
 
         //
-        // Create an Environment object and invoke both versions of the combined BiFunctions
+        // Create an Environment object and invoke both versions of the combined ComposableBiFunction
         //
         final var env     = new Env("Hello", "Dolly", new URL("http://example.com/handleMessage"));
         final var result  = makeAndSendMessage.apply(env, "Say: ");
